@@ -26,6 +26,7 @@ app.get("/", function(req, res) {
 });
 
 app.get("/location", function(req, res) {
+  var loc;
   if (!req.cookies.location) {
     location(function(location) {
       if (!location) {
@@ -47,7 +48,7 @@ app.get("/location", function(req, res) {
       }
     });
   } else {
-    var loc = req.cookies.location;
+    loc = req.cookies.location;
     loc.fromCookie = true;
   }
   res.json(loc);
