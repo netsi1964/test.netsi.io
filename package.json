@@ -1,0 +1,26 @@
+{
+  "name": "test.netsi.io",
+  "version": "0.0.1",
+  "description": "My sandbox on test.netsi.io",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "~4.12.x",
+    "suncalc": "~1.6.x"
+  },
+  "engines": {
+    "node": "0.12.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/netsi1964/test.netsi.io"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}
