@@ -49,7 +49,7 @@ module.exports = function (options) {
 	}
 
 	shortestDay.duration = getSecondsInADay(shortestDay);
-	
+
 	now = new Date();
 	var daysOfYear = 10 ; //(now-new Date(0, 0, 1))/(1000*60*60*24)+1;
 	var sun = [];
@@ -79,7 +79,7 @@ module.exports = function (options) {
 	var DATA = "";
 	var counter = 0;
 	var hour = 60*60;
-	for (var d = 0; d < 366; d += step) {
+	for (var d = 0; d < 180; d += step) {
 		var today = SunCalc.getTimes(now, location.latitude, location.longitude);
 		today.duration = getSecondsInADay(today);
 		var diff = today.duration - shortestDay.duration;
