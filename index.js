@@ -35,7 +35,11 @@ app.get("/", function(req, res) {
 
 });
 
-
+app.get("/location", function(req, res) {
+  geolocation("", function (userInfo) {
+    res.json(userInfo);
+  });
+})
 
 
 
