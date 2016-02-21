@@ -19,8 +19,12 @@ app.set('view engine', 'handlebars');
 app.get("/", function(req, res) {
   var ip = req.headers['X-Forwarded-For'] || req.connection.remoteAddress;
   ip = (ip.indexOf(".") === -1) ? "" : ip;
-  geolocation(ip, function() {
-    var result = netsiSuncalc();
+  geolocation(ip, function(userInfo) {
+    var options = (userInfo.status !== 'fail') ? {
+      latitude: userInfo.loc.lat,
+      longitude: userInfo.loc.lng
+    } : '';
+    var result = netsiSuncalc(options);
     res.setHeader("Content-Type", "text/html");
     res.send(result);
   })
