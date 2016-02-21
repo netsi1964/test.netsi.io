@@ -15,6 +15,7 @@ module.exports = function(options) {
     "longitude": 10.3202970
   };
 
+
   var location = options;
   var months = ["januar", "februar", "marts", "april", "maj", "juni", "juli", "august", "september", "oktober", "november", "december"];
 
@@ -38,7 +39,7 @@ module.exports = function(options) {
     return hms;
   }
 
-  function hmsFriendly(hms) {
+  function hmsFriendly(date, hms) {
     var s = "";
     var hours = (hms.hours > 0) ? hms.hours + " hour" + ((hms.hours > 1) ? "s" : "") : "";
     var minutes = (hms.minutes > 0) ? ((s !== "") ? " and " : "") + hms.minutes + " minute" + ((hms.minutes > 1) ? "s" : "") : "";
@@ -46,7 +47,7 @@ module.exports = function(options) {
     s = hours;
     s += (minutes !== "") ? ((s !== "") ? ((seconds !== "") ? ", " : " and ") : "") + minutes : "";
     s += ((seconds !== "") ? ((s !== "") ? " and " : "") + seconds : "");
-    return s;
+    return (now.getFullYear()+"/"+(now.getMonth()+1)+"/"+now.getDate())+": "+s;
   }
 
   shortestDay.duration = getSecondsInADay(shortestDay);
@@ -59,16 +60,16 @@ module.exports = function(options) {
   var DATA = "";
   var counter = 0;
   var hour = 60 * 60;
-  for (var d = 0; d < 180; d += step) {
+  for (var d = 0; d < 365; d += step) {
     var today = SunCalc.getTimes(now, location.latitude, location.longitude);
     today.duration = getSecondsInADay(today);
     var diff = today.duration - shortestDay.duration;
     var day = {
       "day": now.getDate() + ". " + months[now.getMonth()],
       "diff": diff,
-      "friendly": hmsFriendly(hms(Math.abs(diff)))
+      "friendly": hmsFriendly(today, hms(Math.abs(diff)))
     };
-    DATA += (DATA !== "" ? "," : "") + "[new Date(" + now.getFullYear() + "," + now.getMonth() + "," + now.getDate() + ")," + (diff / hour) + ",'"+hmsFriendly(hms(Math.abs(diff)))+"']";
+    DATA += (DATA !== "" ? "," : "") + "[new Date(" + now.getFullYear() + "," + now.getMonth() + "," + now.getDate() + ")," + (diff / hour) + ",'"+hmsFriendly(now, hms(Math.abs(diff)))+"']";
     now.setDate(now.getDate() + step);
   }
   return {
@@ -76,6 +77,3 @@ module.exports = function(options) {
     options: options
   };
 }
-
-
-// '" + day.day + ":\\n " + hmsFriendly(hms(Math.abs(diff))) + "'
