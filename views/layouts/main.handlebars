@@ -2,7 +2,10 @@
 <html>
 <head>
   <style>
+  @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800);
+
   body {
+    font-family: 'Open Sans', sans-serif;
       display:flex;
       justify-content: space-around;
       flex-direction: column;
@@ -19,6 +22,14 @@
         width: 50%;
         height: 400px;
       }
+      @media only screen
+      and (min-device-width : 375px)
+      and (max-device-width : 667px)
+      and (orientation : portrait) {
+      .visual, .info {
+        flex-direction: column;
+      }
+    }
     </style>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
