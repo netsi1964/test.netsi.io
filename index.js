@@ -1,6 +1,9 @@
 var express = require("express"),
   app = express(),
   url = require('url'),
+  hbs = require('express-handlebars').create(),
+  fs = require('fs'),
+  webshot = require('webshot'),
   cookieParser = require('cookie-parser');
 
 var netsiSuncalc = require("./netsi_suncalc.js"),
@@ -8,6 +11,7 @@ var netsiSuncalc = require("./netsi_suncalc.js"),
 
 app.set("port", (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
+app.use('/static', express.static(__dirname + '/shoots'));
 app.use(cookieParser());
 
 var exphbs = require('express-handlebars');
@@ -54,6 +58,20 @@ app.get("/", function(req, res) {
 
 });
 
+
+
+
+app.get("/shoot", function(req, res) {
+  res.setHeader("Content-Type", "text/html");
+  var context = {date: new Date()};
+  hbs.render("./views/screenshoot.handlebars", context).then(function(html) {
+    webshot(html, './shoots/hello_world.png', {siteType:'html', req:req}, function(err) {
+      res.redirect("./static/hello_world.png");
+    });
+
+  });
+
+})
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running on port", app.get("port"));
