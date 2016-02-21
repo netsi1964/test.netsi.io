@@ -19,40 +19,39 @@ app.set('view engine', 'handlebars');
 app.get("/", function(req, res) {
   //var result = netsiSuncalc();
   // res.setHeader("Content-Type", "text/html");
-  res.render('map', {
-    location: req.cookies.location
+  location(function(location) {
+    if (!location) {
+      res.status("400").json({
+        error: "Could not get location"
+      });
+    } else {
+      if (location) {
+        var temp = location.loc.split(",").map(function(e) {
+          return parseFloat(e);
+        });
+        location.loc = {
+          "lat": temp[0],
+          "lng": temp[1]
+        };
+        console.log(location);
+      }
+      // res.cookie('location', location, {
+      //   maxAge: 60 * 1000 * 60 * 24 * 3
+      // });
+      location.fromCookie = false;
+      res.render('map', {
+        location: location
+      });
+    }
+
+
   });
+
   //res.send(result);
 });
 
-app.get("/location", function(req, res) {
-  var loc;
-  if (!req.cookies.location) {
-    location(function(location) {
-      if (!location) {
-        res.status("400").json({
-          error: "Could not get location"
-        });
-      } else {
-        if (location) {
-          var temp = location.loc.split(",").map(function(e) {
-            return parseFloat(e);
-          });
-          location.loc = {"lat":temp[0], "lng":temp[1]};
-        }
-        res.cookie('location', location, {
-          maxAge: 60 * 1000 * 60 * 24 * 3
-        });
-        location.fromCookie = false;
-        res.json(location);
-      }
-    });
-  } else {
-    loc = req.cookies.location;
-    loc.fromCookie = true;
-  }
-  res.json(loc);
-});
+
+
 
 
 
