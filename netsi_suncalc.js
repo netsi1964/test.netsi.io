@@ -55,28 +55,7 @@ module.exports = function(options) {
   var daysOfYear = 10; //(now-new Date(0, 0, 1))/(1000*60*60*24)+1;
   var sun = [];
   var step = 1;
-  var fb = "<!DOCTYPE html><html lang=\"en\"><head><script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script></head><body><h1>Length of the daylight time</h1><div id=\"chart_div\"><div>"
-  fb += "<script>google.load('visualization', '1', {packages: ['corechart', 'line']});";
-  fb += "google.setOnLoadCallback(drawBasic);";
-  fb += "function drawBasic() {";
-  fb += "var data = new google.visualization.DataTable();";
-  fb += "data.addColumn('date', 'X');";
-  fb += "data.addColumn('number', 'Daylight');";
-  fb += "data.addColumn({type:'string', role:'tooltip'});";
-  fb += "data.addRows([%DATA%]);";
 
-  fb += "var options = {";
-  fb += "hAxis: {";
-  fb += "title: 'Date: " + JSON.stringify(options) + "'";
-  fb += "},";
-  fb += "vAxis: {";
-  fb += "title: 'Daylight'";
-  fb += "}";
-  fb += "};";
-  fb += "var chart = new google.visualization.LineChart(document.getElementById('chart_div'));";
-  fb += "chart.draw(data, options);";
-  fb += "}</script>";
-  fb += "</body></html>"
   var DATA = "";
   var counter = 0;
   var hour = 60 * 60;
@@ -89,8 +68,14 @@ module.exports = function(options) {
       "diff": diff,
       "friendly": hmsFriendly(hms(Math.abs(diff)))
     };
-    DATA += (DATA !== "" ? "," : "") + "[new Date(" + now.getFullYear() + "," + now.getMonth() + "," + now.getDate() + ")," + (diff / hour) + ",'" + day.day + ":\\n " + hmsFriendly(hms(Math.abs(diff))) + "']";
+    DATA += (DATA !== "" ? "," : "") + "[new Date(" + now.getFullYear() + "," + now.getMonth() + "," + now.getDate() + ")," + (diff / hour) + ",'"+hmsFriendly(hms(Math.abs(diff)))+"']";
     now.setDate(now.getDate() + step);
   }
-  return fb.replace("%DATA%", DATA);
+  return {
+    graphData: DATA,
+    options: options
+  };
 }
+
+
+// '" + day.day + ":\\n " + hmsFriendly(hms(Math.abs(diff))) + "'

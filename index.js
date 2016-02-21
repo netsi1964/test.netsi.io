@@ -26,7 +26,11 @@ app.get("/", function(req, res) {
     } : '';
     var result = netsiSuncalc(options);
     res.setHeader("Content-Type", "text/html");
-    res.send(result);
+    res.render('map', {
+      suncalc: result,
+      userInfo: userInfo
+    });
+    //res.send(result);
   })
 
 });
