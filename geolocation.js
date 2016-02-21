@@ -7,7 +7,7 @@ module.exports = function(ip, callback) {
     json: true
   }, function(error, response, body) {
     if (error) {
-      callback();
+      callback(error);
     } else {
       callback(body);
     }
