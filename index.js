@@ -43,6 +43,7 @@ app.get("/", function(req, res) {
     //console.log("Try to find geolocation from browser")
     var ip = req.headers['X-Forwarded-For'] || req.connection.remoteAddress;
     ip = (ip.indexOf(".") === -1) ? "" : ip;
+    console.log("You are at IP "+ip);
     geolocation(ip, function(userInfo) {
       options = (userInfo.status !== 'fail') ? {
         latitude: userInfo.loc.lat,

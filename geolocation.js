@@ -7,6 +7,8 @@ module.exports = function(ip, callback) {
     json: true
   }, function(error, response, body) {
     if (error) {
+      console.log("Request for "+url);
+      console.log("gave error "+error);
       callback(error);
     } else {
       callback(body);
