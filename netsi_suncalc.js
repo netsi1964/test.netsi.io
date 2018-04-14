@@ -4,26 +4,48 @@
 
 // https://www.npmjs.com/package/suncalc
 // https://www.npmjs.com/package/geolib
-var SunCalc = require('suncalc'),
-  geolocation = require('./geolocation.js');
+var SunCalc = require("suncalc"),
+  geolocation = require("./geolocation.js");
 
 module.exports = function(options) {
   var now = new Date();
   var oneDay = 1000 * 60 * 60 * 24;
   options = options || {
-    "latitude": 56.2807040,
-    "longitude": 10.3202970
+    latitude: 56.280704,
+    longitude: 10.320297
   };
 
-
   var location = options;
-  var months = ["januar", "februar", "marts", "april", "maj", "juni", "juli", "august", "september", "oktober", "november", "december"];
+  var months = [
+    "januar",
+    "februar",
+    "marts",
+    "april",
+    "maj",
+    "juni",
+    "juli",
+    "august",
+    "september",
+    "oktober",
+    "november",
+    "december"
+  ];
 
-  var shortestDay = SunCalc.getTimes(new Date(now.getFullYear() - 1, 11, 21), location.latitude, location.longitude);
+  var shortestDay = SunCalc.getTimes(
+    new Date(now.getFullYear() - 1, 11, 21),
+    location.latitude,
+    location.longitude
+  );
 
   function getSecondsInADay(times) {
-    var up = times.sunrise.getHours() * 60 * 60 + times.sunrise.getMinutes() * 60 + times.sunrise.getSeconds();
-    var down = times.sunset.getHours() * 60 * 60 + times.sunset.getMinutes() * 60 + times.sunset.getSeconds();
+    var up =
+      times.sunrise.getHours() * 60 * 60 +
+      times.sunrise.getMinutes() * 60 +
+      times.sunrise.getSeconds();
+    var down =
+      times.sunset.getHours() * 60 * 60 +
+      times.sunset.getMinutes() * 60 +
+      times.sunset.getSeconds();
     return down - up;
   }
 
@@ -41,13 +63,37 @@ module.exports = function(options) {
 
   function hmsFriendly(date, hms) {
     var s = "";
-    var hours = (hms.hours > 0) ? hms.hours + " hour" + ((hms.hours > 1) ? "s" : "") : "";
-    var minutes = (hms.minutes > 0) ? ((s !== "") ? " and " : "") + hms.minutes + " minute" + ((hms.minutes > 1) ? "s" : "") : "";
-    var seconds = (hms.seconds > 0) ? ((s !== "") ? " and " : "") + hms.seconds + " second" + ((hms.seconds > 1) ? "s" : "") : "";
+    var hours =
+      hms.hours > 0 ? hms.hours + " hour" + (hms.hours > 1 ? "s" : "") : "";
+    var minutes =
+      hms.minutes > 0
+        ? (s !== "" ? " and " : "") +
+          hms.minutes +
+          " minute" +
+          (hms.minutes > 1 ? "s" : "")
+        : "";
+    var seconds =
+      hms.seconds > 0
+        ? (s !== "" ? " and " : "") +
+          hms.seconds +
+          " second" +
+          (hms.seconds > 1 ? "s" : "")
+        : "";
     s = hours;
-    s += (minutes !== "") ? ((s !== "") ? ((seconds !== "") ? ", " : " and ") : "") + minutes : "";
-    s += ((seconds !== "") ? ((s !== "") ? " and " : "") + seconds : "");
-    return (now.getFullYear()+"/"+(now.getMonth()+1)+"/"+now.getDate())+": "+s;
+    s +=
+      minutes !== ""
+        ? (s !== "" ? (seconds !== "" ? ", " : " and ") : "") + minutes
+        : "";
+    s += seconds !== "" ? (s !== "" ? " and " : "") + seconds : "";
+    return (
+      now.getFullYear() +
+      "/" +
+      (now.getMonth() + 1) +
+      "/" +
+      now.getDate() +
+      ": " +
+      s
+    );
   }
 
   shortestDay.duration = getSecondsInADay(shortestDay);
@@ -65,15 +111,27 @@ module.exports = function(options) {
     today.duration = getSecondsInADay(today);
     var diff = today.duration - shortestDay.duration;
     var day = {
-      "day": now.getDate() + ". " + months[now.getMonth()],
-      "diff": diff,
-      "friendly": hmsFriendly(today, hms(Math.abs(diff)))
+      day: now.getDate() + ". " + months[now.getMonth()],
+      diff: diff,
+      friendly: hmsFriendly(today, hms(Math.abs(diff)))
     };
-    DATA += (DATA !== "" ? "," : "") + "[new Date(" + now.getFullYear() + "," + now.getMonth() + "," + now.getDate() + ")," + (diff / hour) + ",'"+hmsFriendly(now, hms(Math.abs(diff)))+"']";
+    DATA +=
+      (DATA !== "" ? "," : "") +
+      "[new Date(" +
+      now.getFullYear() +
+      "," +
+      now.getMonth() +
+      "," +
+      now.getDate() +
+      ")," +
+      diff / hour +
+      ",'" +
+      hmsFriendly(now, hms(Math.abs(diff))) +
+      "']";
     now.setDate(now.getDate() + step);
   }
   return {
     graphData: DATA,
     options: options
   };
-}
+};
