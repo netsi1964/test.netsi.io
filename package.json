@@ -7,12 +7,12 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "cookie-parser": "*",
-    "express": "*",
-    "express-handlebars": "*",
-    "request": "*",
-    "suncalc": "*",
-    "webshot": "*"
+    "cookie-parser": "^1.4.0",
+    "express": "~4.12.x",
+    "express-handlebars": "^2.0.1",
+    "request": "^2.69.0",
+    "suncalc": "~1.6.x",
+    "webshot": "^0.18.0"
   },
   "engines": {
     "node": "8.1.4"
